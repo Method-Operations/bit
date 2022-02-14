@@ -406,7 +406,6 @@
     "overrides": {
       "@types/fs-capacitor": "2.0.0"
     },
-    "nodeLinker": "hoisted",
     "rootComponents": true,
     "nodeVersion": "16.16.0",
     "engineStrict": true,
