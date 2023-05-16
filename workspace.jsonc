@@ -385,7 +385,8 @@
         "workbox-webpack-plugin": "6.2.4",
         "ws": "7.4.2",
         "yaml": "1.10.2",
-        "yesno": "0.4.0"
+        "yesno": "0.4.0",
+        "@teambit/librarian.utils.ipc-bus": "link:../librarian-ws/node_modules/@teambit/librarian.utils.ipc-bus"
       },
       "peerDependencies": {
         "@apollo/client": "^3.6.0",
