@@ -3,7 +3,9 @@ import path from 'path';
 import semver from 'semver';
 import parsePackageName from 'parse-package-name';
 import { initDefaultReporter } from '@pnpm/default-reporter';
+import { readWantedLockfile } from '@pnpm/lockfile-file';
 import { streamParser } from '@pnpm/logger';
+import { hoist } from '@pnpm/hoist';
 import { StoreController, WantedDependency } from '@pnpm/package-store';
 import { readModulesManifest } from '@pnpm/modules-yaml';
 import { createOrConnectStoreController, CreateStoreControllerOptions } from '@pnpm/store-connection-manager';
@@ -285,9 +287,21 @@ export async function install(
     const { stats } = await installsRunning[rootDir];
     dependenciesChanged = stats.added + stats.removed + stats.linkedToRoot > 0;
     delete installsRunning[rootDir];
-    await sendMessage({
-      folder: path.join(rootDir, 'node_modules'),
-    });
+    if (mountModules) {
+      const modulesDir = path.join(rootDir, 'node_modules');
+      await sendMessage({
+        folder: modulesDir,
+      });
+      const virtualStoreDir = path.join(modulesDir, '.pnpm');
+      await hoist({
+        lockfile: (await readWantedLockfile(rootDir, { ignoreIncompatible: true }))!,
+        privateHoistPattern: opts.hoistPattern ?? ['*'],
+        privateHoistedModulesDir: path.join(virtualStoreDir, 'node_modules'),
+        publicHoistPattern: opts.publicHoistPattern ?? [],
+        publicHoistedModulesDir: modulesDir,
+        virtualStoreDir,
+      });
+    }
   } catch (err: any) {
     throw pnpmErrorToBitError(err);
   } finally {
