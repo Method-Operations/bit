@@ -2,11 +2,14 @@ import fs from 'fs-extra';
 import path from 'path';
 import semver from 'semver';
 import parsePackageName from 'parse-package-name';
+import * as dp from '@pnpm/dependency-path';
 import { initDefaultReporter } from '@pnpm/default-reporter';
-import { readWantedLockfile } from '@pnpm/lockfile-file';
+import { readWantedLockfile, Lockfile } from '@pnpm/lockfile-file';
+import { nameVerFromPkgSnapshot } from '@pnpm/lockfile-utils';
 import { streamParser } from '@pnpm/logger';
 import { hoist } from '@pnpm/hoist';
 import { StoreController, WantedDependency } from '@pnpm/package-store';
+import { linkBins } from '@pnpm/link-bins';
 import { readModulesManifest } from '@pnpm/modules-yaml';
 import { createOrConnectStoreController, CreateStoreControllerOptions } from '@pnpm/store-connection-manager';
 import { sortPackages } from '@pnpm/sort-packages';
@@ -293,14 +296,27 @@ export async function install(
         folder: modulesDir,
       });
       const virtualStoreDir = path.join(modulesDir, '.pnpm');
+      const lockfile = (await readWantedLockfile(rootDir, { ignoreIncompatible: true }))!;
       await hoist({
-        lockfile: (await readWantedLockfile(rootDir, { ignoreIncompatible: true }))!,
+        lockfile,
         privateHoistPattern: opts.hoistPattern ?? ['*'],
         privateHoistedModulesDir: path.join(virtualStoreDir, 'node_modules'),
         publicHoistPattern: opts.publicHoistPattern ?? [],
         publicHoistedModulesDir: modulesDir,
         virtualStoreDir,
       });
+      try {
+        await linkBins(modulesDir, path.join(modulesDir, '.bin'), {
+          warn: () => {},
+        });
+      } catch (err: any) {
+        // eslint-disable-line
+        // Some packages generate their commands with lifecycle hooks.
+        // At this stage, such commands are not generated yet.
+        // For now, we don't hoist such generated commands.
+        // Related issue: https://github.com/pnpm/pnpm/issues/2071
+      }
+      await linkAllBins(lockfile, virtualStoreDir);
     }
   } catch (err: any) {
     throw pnpmErrorToBitError(err);
@@ -320,6 +336,40 @@ export async function install(
     }
   }
   return { dependenciesChanged };
+}
+
+async function linkAllBins(lockfile: Lockfile, virtualStoreDir: string) {
+  for (const [depPath, pkgSnapshot] of Object.entries(lockfile.packages ?? {})) {
+    let hasBin = pkgSnapshot.hasBin;
+    if (!hasBin) {
+      for (const [depName, ref] of Object.entries({
+        ...pkgSnapshot.dependencies,
+        ...pkgSnapshot.optionalDependencies,
+      })) {
+        const depRelPath = dp.refToRelative(ref, depName);
+        if (!depRelPath) continue;
+        const depPkgSnapshot = lockfile.packages?.[depRelPath];
+        if (!depPkgSnapshot) continue;
+        hasBin = depPkgSnapshot.hasBin;
+        if (hasBin) break;
+      }
+      if (!hasBin) break;
+    }
+    const { name } = nameVerFromPkgSnapshot(depPath, pkgSnapshot);
+    const currentPath = dp.depPathToFilename(depPath);
+    try {
+      const modulesDir = path.join(virtualStoreDir, currentPath, 'node_modules');
+      await linkBins(modulesDir, path.join(modulesDir, name, 'node_modules/.bin'), {
+        warn: () => {},
+      });
+    } catch (err: any) {
+      // eslint-disable-line
+      // Some packages generate their commands with lifecycle hooks.
+      // At this stage, such commands are not generated yet.
+      // For now, we don't hoist such generated commands.
+      // Related issue: https://github.com/pnpm/pnpm/issues/2071
+    }
+  }
 }
 
 /*
