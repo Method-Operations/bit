@@ -353,7 +353,7 @@ async function linkAllBins(lockfile: Lockfile, virtualStoreDir: string) {
         hasBin = depPkgSnapshot.hasBin;
         if (hasBin) break;
       }
-      if (!hasBin) break;
+      if (!hasBin) continue;
     }
     const { name } = nameVerFromPkgSnapshot(depPath, pkgSnapshot);
     const currentPath = dp.depPathToFilename(depPath);
