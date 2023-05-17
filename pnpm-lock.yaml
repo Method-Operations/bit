@@ -94,9 +94,18 @@ importers:
       '@pnpm/fetch':
         specifier: 7.0.1
         version: 7.0.1(@pnpm/logger@5.0.0)
+      '@pnpm/hoist':
+        specifier: 8.0.3
+        version: 8.0.3(@pnpm/logger@5.0.0)
+      '@pnpm/link-bins':
+        specifier: 9.0.0
+        version: 9.0.0(@pnpm/logger@5.0.0)
       '@pnpm/lockfile-file':
         specifier: 8.0.2
         version: 8.0.2(@pnpm/logger@5.0.0)
+      '@pnpm/lockfile-utils':
+        specifier: 7.0.1
+        version: 7.0.1
       '@pnpm/logger':
         specifier: 5.0.0
         version: 5.0.0
@@ -118,6 +127,9 @@ importers:
       '@pnpm/pick-registry-for-package':
         specifier: 5.0.0
         version: 5.0.0
+      '@pnpm/plugin-commands-rebuild':
+        specifier: ^8.0.10
+        version: 8.0.10(@pnpm/logger@5.0.0)(bluebird@3.7.2)
       '@pnpm/registry-mock':
         specifier: 3.4.0
         version: 3.4.0
@@ -23093,9 +23105,18 @@ importers:
       '@pnpm/error':
         specifier: 5.0.0
         version: 5.0.0
+      '@pnpm/hoist':
+        specifier: 8.0.3
+        version: 8.0.3(@pnpm/logger@5.0.0)
+      '@pnpm/link-bins':
+        specifier: 9.0.0
+        version: 9.0.0(@pnpm/logger@5.0.0)
       '@pnpm/lockfile-file':
         specifier: 8.0.2
         version: 8.0.2(@pnpm/logger@5.0.0)
+      '@pnpm/lockfile-utils':
+        specifier: 7.0.1
+        version: 7.0.1
       '@pnpm/logger':
         specifier: 5.0.0
         version: 5.0.0
@@ -23108,6 +23129,9 @@ importers:
       '@pnpm/pick-registry-for-package':
         specifier: 5.0.0
         version: 5.0.0
+      '@pnpm/plugin-commands-rebuild':
+        specifier: ^8.0.10
+        version: 8.0.10(@pnpm/logger@5.0.0)(bluebird@3.7.2)
       '@pnpm/sort-packages':
         specifier: 5.0.2
         version: 5.0.2
@@ -36440,6 +36464,25 @@ packages:
       load-json-file: 6.2.0
     dev: false
 
+  /@pnpm/cli-utils@2.0.8(@pnpm/logger@5.0.0):
+    resolution: {integrity: sha512-e0ItFSSW9UpwuVYnlRuPG1VpJDM6DXxv77KiFJstEPv4mlnFHz8LQR1TYTHvJoexgfN8d4e3kCtqAE26T0bTcQ==}
+    engines: {node: '>=16.14'}
+    peerDependencies:
+      '@pnpm/logger': ^5.0.0
+    dependencies:
+      '@pnpm/cli-meta': 5.0.0
+      '@pnpm/config': 18.3.2(@pnpm/logger@5.0.0)
+      '@pnpm/default-reporter': 12.2.2(@pnpm/logger@5.0.0)
+      '@pnpm/error': 5.0.0
+      '@pnpm/logger': 5.0.0
+      '@pnpm/manifest-utils': 5.0.0(@pnpm/logger@5.0.0)
+      '@pnpm/package-is-installable': 8.0.1(@pnpm/logger@5.0.0)
+      '@pnpm/read-project-manifest': 5.0.0
+      '@pnpm/types': 9.0.0
+      chalk: 4.1.2
+      load-json-file: 6.2.0
+    dev: false
+
   /@pnpm/client@10.0.5(@pnpm/logger@5.0.0)(bluebird@3.7.2):
     resolution: {integrity: sha512-d6u338jtPoXm3o3/xDNqA9MnYqFtKYUEN5RMHgB3m7Osy/NPmNu/TSajdhORbhEt9YryUthPAnmSU9mTMbUXIg==}
     engines: {node: '>=16.14'}
@@ -36465,6 +36508,11 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       chalk: 4.1.2
+    dev: false
+
+  /@pnpm/common-cli-options-help@1.0.0:
+    resolution: {integrity: sha512-U2RncKn5lEGVeTm/A0zicYE+F/gtPX/dkVMeD+EwOE8f0qVpKCmtuYvdBJFGGUNwBEQyOORkQpNA2XUJ57nxQQ==}
+    engines: {node: '>=16.14'}
     dev: false
 
   /@pnpm/config.env-replace@1.1.0:
@@ -36497,6 +36545,36 @@ packages:
       read-ini-file: 4.0.0
       realpath-missing: 1.1.0
       which: 3.0.0
+    transitivePeerDependencies:
+      - '@pnpm/logger'
+    dev: false
+
+  /@pnpm/config@18.3.2(@pnpm/logger@5.0.0):
+    resolution: {integrity: sha512-qLmAkmrlYJ59AjBxFDFipTjqs1riQ+l+5Q2AenrghEEc/3P4hMxm7mO6zlzhz6tfTwbLrXUxDYq5UgtvMdMgJA==}
+    engines: {node: '>=16.14'}
+    dependencies:
+      '@pnpm/config.env-replace': 1.1.0
+      '@pnpm/constants': 7.0.0
+      '@pnpm/error': 5.0.0
+      '@pnpm/git-utils': 1.0.0
+      '@pnpm/matcher': 5.0.0
+      '@pnpm/npm-conf': 2.2.0
+      '@pnpm/pnpmfile': 5.0.6(@pnpm/logger@5.0.0)
+      '@pnpm/read-project-manifest': 5.0.0
+      '@pnpm/types': 9.0.0
+      better-path-resolve: 1.0.0
+      camelcase: 6.3.0
+      camelcase-keys: 6.2.2
+      can-write-to-dir: 1.1.1
+      is-subdir: 1.2.0
+      is-windows: 1.0.2
+      normalize-registry-url: 2.0.0
+      path-absolute: 1.0.1
+      path-name: 1.0.0
+      ramda: /@pnpm/ramda@0.28.1
+      read-ini-file: 4.0.0
+      realpath-missing: 1.1.0
+      which: 3.0.1
     transitivePeerDependencies:
       - '@pnpm/logger'
     dev: false
@@ -36654,6 +36732,35 @@ packages:
       strip-ansi: 6.0.1
     dev: false
 
+  /@pnpm/default-reporter@12.2.2(@pnpm/logger@5.0.0):
+    resolution: {integrity: sha512-VdcFLqTJ0zmlqHdAkWs1VJk819sHCwrkwGTAjrc7o7SX0zSeM1FCas5frf5tg786BLzkeoDhKVQXdldPUYFMJg==}
+    engines: {node: '>=16.14'}
+    peerDependencies:
+      '@pnpm/logger': ^5.0.0
+    dependencies:
+      '@pnpm/config': 18.3.2(@pnpm/logger@5.0.0)
+      '@pnpm/core-loggers': 9.0.0(@pnpm/logger@5.0.0)
+      '@pnpm/dedupe.issues-renderer': 1.0.0
+      '@pnpm/dedupe.types': 1.0.0
+      '@pnpm/error': 5.0.0
+      '@pnpm/logger': 5.0.0
+      '@pnpm/render-peer-issues': 4.0.0
+      '@pnpm/types': 9.0.0
+      ansi-diff: 1.1.1
+      boxen: 5.1.2
+      chalk: 4.1.2
+      normalize-path: 3.0.0
+      pretty-bytes: 5.6.0
+      pretty-ms: 7.0.1
+      ramda: /@pnpm/ramda@0.28.1
+      right-pad: 1.0.1
+      rxjs: 7.8.1
+      semver: 7.5.0
+      stacktracey: 2.1.8
+      string-length: 4.0.2
+      strip-ansi: 6.0.1
+    dev: false
+
   /@pnpm/default-resolver@18.0.5(@pnpm/logger@5.0.0):
     resolution: {integrity: sha512-lHZKUSAeDSAtbloOPDqHtyhYodmSlpX7GLEaq2rjJACQvO0CuuZuYn/tW4Q3mBOFWmrg7De4QRoGVCEnaA4/0Q==}
     engines: {node: '>=16.14'}
@@ -36760,6 +36867,31 @@ packages:
       '@pnpm/package-is-installable': 8.0.1(@pnpm/logger@5.0.0)
       '@pnpm/types': 9.0.0
       ramda: /@pnpm/ramda@0.28.1
+    dev: false
+
+  /@pnpm/find-workspace-packages@6.0.8(@pnpm/logger@5.0.0):
+    resolution: {integrity: sha512-PNcXHA283dNxt3GT9y2O49/skjX1Ub+qpzbFZ73Ojajx5+yFcXawkQHvL14h0y3E/fgQMzFFjhk7oyH4p69Ufw==}
+    engines: {node: '>=16.14'}
+    dependencies:
+      '@pnpm/cli-utils': 2.0.8(@pnpm/logger@5.0.0)
+      '@pnpm/constants': 7.0.0
+      '@pnpm/fs.find-packages': 2.0.0
+      '@pnpm/types': 9.0.0
+      '@pnpm/util.lex-comparator': 1.0.0
+      read-yaml-file: 2.1.0
+    transitivePeerDependencies:
+      - '@pnpm/logger'
+    dev: false
+
+  /@pnpm/fs.find-packages@2.0.0:
+    resolution: {integrity: sha512-D6BjajcUygM3/HzZ824bXwPFOgx8fTUcWLPr2c5WlutpFJiMT81Krfe2fHgIVR8PR4Sed5iLPSchOAw/f2zD5A==}
+    engines: {node: '>=16.14'}
+    dependencies:
+      '@pnpm/read-project-manifest': 5.0.0
+      '@pnpm/types': 9.0.0
+      '@pnpm/util.lex-comparator': 1.0.0
+      fast-glob: 3.2.12
+      p-filter: 2.1.0
     dev: false
 
   /@pnpm/fs.hard-link-dir@2.0.1(@pnpm/logger@5.0.0):
@@ -37061,6 +37193,18 @@ packages:
 
   /@pnpm/lockfile-utils@7.0.1:
     resolution: {integrity: sha512-9ZOxYbD3Gk0MfBO+c+M3UVIOCTiuigVbaQ5D7frcE7IH1GdR7Alc68gPo2ZN3+4coO44VH7HTKPv69VP6fl5vA==}
+    engines: {node: '>=16.14'}
+    dependencies:
+      '@pnpm/dependency-path': 2.1.1
+      '@pnpm/lockfile-types': 5.0.0
+      '@pnpm/resolver-base': 10.0.0
+      '@pnpm/types': 9.0.0
+      get-npm-tarball-url: 2.0.3
+      ramda: /@pnpm/ramda@0.28.1
+    dev: false
+
+  /@pnpm/lockfile-utils@8.0.0:
+    resolution: {integrity: sha512-UqbQP/wq1J2Z+v0+Hjx5kM0tnj0qIIEQbN4kUBD2YNdQx61FpX97bZX8GNs+QywAKfcGq7RqT5nO4t/Jrgn/vQ==}
     engines: {node: '>=16.14'}
     dependencies:
       '@pnpm/dependency-path': 2.1.1
@@ -37433,6 +37577,48 @@ packages:
       resolve-link-target: 2.0.0
     dev: false
 
+  /@pnpm/plugin-commands-rebuild@8.0.10(@pnpm/logger@5.0.0)(bluebird@3.7.2):
+    resolution: {integrity: sha512-bgSnRBZ5hXL8dVikRHMFDYUE2zjR8I7XZR+vzaeXf1Ogy5TJj8lIhMrtgSb3AvyP2RLxG+KlQEVrqtBof4ruCg==}
+    engines: {node: '>=16.14'}
+    peerDependencies:
+      '@pnpm/logger': ^5.0.0
+    dependencies:
+      '@pnpm/cli-utils': 2.0.8(@pnpm/logger@5.0.0)
+      '@pnpm/common-cli-options-help': 1.0.0
+      '@pnpm/config': 18.3.2(@pnpm/logger@5.0.0)
+      '@pnpm/constants': 7.0.0
+      '@pnpm/core-loggers': 9.0.0(@pnpm/logger@5.0.0)
+      '@pnpm/dependency-path': 2.1.1
+      '@pnpm/error': 5.0.0
+      '@pnpm/find-workspace-packages': 6.0.8(@pnpm/logger@5.0.0)
+      '@pnpm/fs.hard-link-dir': 2.0.1(@pnpm/logger@5.0.0)
+      '@pnpm/get-context': 9.1.0(@pnpm/logger@5.0.0)
+      '@pnpm/graph-sequencer': 1.1.1
+      '@pnpm/lifecycle': 15.0.0(@pnpm/logger@5.0.0)(bluebird@3.7.2)
+      '@pnpm/link-bins': 9.0.0(@pnpm/logger@5.0.0)
+      '@pnpm/lockfile-utils': 8.0.0
+      '@pnpm/lockfile-walker': 7.0.2
+      '@pnpm/logger': 5.0.0
+      '@pnpm/modules-yaml': 12.1.0
+      '@pnpm/normalize-registries': 5.0.0
+      '@pnpm/npm-package-arg': 1.0.0
+      '@pnpm/sort-packages': 5.0.2
+      '@pnpm/store-connection-manager': 6.0.9(@pnpm/logger@5.0.0)(bluebird@3.7.2)
+      '@pnpm/store-controller-types': 15.0.0
+      '@pnpm/types': 9.0.0
+      load-json-file: 6.2.0
+      mem: 8.1.1
+      p-limit: 3.1.0
+      ramda: /@pnpm/ramda@0.28.1
+      render-help: 1.0.3
+      run-groups: 3.0.1
+      semver: 7.5.0
+    transitivePeerDependencies:
+      - bluebird
+      - domexception
+      - supports-color
+    dev: false
+
   /@pnpm/pnpmfile@5.0.6(@pnpm/logger@5.0.0):
     resolution: {integrity: sha512-J5RjkpjinJopUBwgSSkLTzonpyrmtMPq4x41ct5OBK685vVdvnrFabkoeYmi6I6XcO2k1SOKad5ds1r5Z/vd6A==}
     engines: {node: '>=16.14'}
@@ -37695,6 +37881,29 @@ packages:
       - supports-color
     dev: false
 
+  /@pnpm/store-connection-manager@6.0.9(@pnpm/logger@5.0.0)(bluebird@3.7.2):
+    resolution: {integrity: sha512-w5IYNqo17Pp4DwGlJmAv3OFUz8119qsNd4CJmYEg+QanGCzQvKGy9PfTfXekVzlCPjscH3qzdSSqWLivPNpT+w==}
+    engines: {node: '>=16.14'}
+    peerDependencies:
+      '@pnpm/logger': ^5.0.0
+    dependencies:
+      '@pnpm/cli-meta': 5.0.0
+      '@pnpm/client': 10.0.5(@pnpm/logger@5.0.0)(bluebird@3.7.2)
+      '@pnpm/config': 18.3.2(@pnpm/logger@5.0.0)
+      '@pnpm/error': 5.0.0
+      '@pnpm/logger': 5.0.0
+      '@pnpm/package-store': 16.0.2(@pnpm/logger@5.0.0)
+      '@pnpm/server': 15.0.1(@pnpm/logger@5.0.0)
+      '@pnpm/store-path': 8.0.0
+      '@zkochan/diable': 1.0.2
+      delay: 5.0.0
+      dir-is-case-sensitive: 2.0.0
+    transitivePeerDependencies:
+      - bluebird
+      - domexception
+      - supports-color
+    dev: false
+
   /@pnpm/store-controller-types@15.0.0:
     resolution: {integrity: sha512-Tx0LOEeEmJkXxZAr/5bgv596V0aE0D5prhV0FMaTE6nZPwDx+3wogNbYv5N+aldqrriE91W9+qYqOErA1IGHiA==}
     engines: {node: '>=16.14'}
@@ -37771,7 +37980,7 @@ packages:
     dev: false
 
   /@pnpm/util.lex-comparator@1.0.0:
-    resolution: {integrity: sha1-C31RMSZdb1uqS+gSx4IeULjTngk=, tarball: https://node-registry.bit.cloud/@pnpm/util.lex-comparator/-/@pnpm-util.lex-comparator-1.0.0.tgz}
+    resolution: {integrity: sha1-C31RMSZdb1uqS+gSx4IeULjTngk=, tarball: https://node-registry.bit.cloud/@pnpm/util.lex-comparator/-/pnpm-util.lex-comparator-1.0.0.tgz}
     engines: {node: '>=12.22.0'}
     dev: false
 
@@ -41393,7 +41602,7 @@ packages:
     dev: false
 
   /@teambit/evangelist.input.checkbox.label@1.0.10(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha1-ub516a6yD7zFu3GeZXNeH97ULNo=, tarball: https://node-registry.bit.cloud/tarballs/teambit.evangelist/input/checkbox/label@1.0.10.tgz}
+    resolution: {integrity: sha1-ub516a6yD7zFu3GeZXNeH97ULNo=, tarball: https://node-registry.bit.cloud/@teambit/evangelist.input.checkbox.label/-/@teambit-evangelist.input.checkbox.label-1.0.10.tgz}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0
       react-dom: ^16.8.0 || ^17.0.0
@@ -59930,6 +60139,13 @@ packages:
       fs-extra: 10.1.0
     dev: false
 
+  /render-help@1.0.3:
+    resolution: {integrity: sha512-oC1+EZEeVpinZDtG0j7Frby2HRGUtU+x62/0QRH/1FcZR9U/OgsI7HKpy/a36iXdI9by0SouWTHm8CDaOeqx3A==}
+    engines: {node: '>=10'}
+    dependencies:
+      table: 6.8.1
+    dev: false
+
   /renderkid@2.0.7:
     resolution: {integrity: sha512-oCcFyxaMrKsKcTY59qnCAtmDVSLfPbrv6A3tVbPdFMMrv5jaK10V6m40cKsoPNhAqN6rmHW9sswW4o3ruSrwUQ==}
     dependencies:
@@ -60293,6 +60509,12 @@ packages:
 
   /rxjs@7.8.0:
     resolution: {integrity: sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==}
+    dependencies:
+      tslib: 2.5.0
+    dev: false
+
+  /rxjs@7.8.1:
+    resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
     dependencies:
       tslib: 2.5.0
     dev: false
@@ -63689,6 +63911,14 @@ packages:
 
   /which@3.0.0:
     resolution: {integrity: sha512-nla//68K9NU6yRiwDY/Q8aU6siKlSs64aEC7+IV56QoAuyQT2ovsJcgGYGyqMOmI/CGN1BOR6mM5EN0FBO+zyQ==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+    hasBin: true
+    dependencies:
+      isexe: 2.0.0
+    dev: false
+
+  /which@3.0.1:
+    resolution: {integrity: sha512-XA1b62dzQzLfaEOSQFTCOd5KFf/1VSzZo7/7TUjnya6u0vGGKzU96UQBZTAThCb2j4/xjBAyii1OhRLJEivHvg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dependencies:
@@ -67948,16 +68178,21 @@ packages:
       '@pnpm/default-reporter': 12.2.1(@pnpm/logger@5.0.0)
       '@pnpm/dependency-path': 2.1.1
       '@pnpm/error': 5.0.0
+      '@pnpm/hoist': 8.0.3(@pnpm/logger@5.0.0)
+      '@pnpm/link-bins': 9.0.0(@pnpm/logger@5.0.0)
       '@pnpm/lockfile-file': 8.0.2(@pnpm/logger@5.0.0)
+      '@pnpm/lockfile-utils': 7.0.1
       '@pnpm/logger': 5.0.0
       '@pnpm/modules-yaml': 12.1.0
       '@pnpm/package-store': 16.0.2(@pnpm/logger@5.0.0)
       '@pnpm/pick-registry-for-package': 5.0.0
+      '@pnpm/plugin-commands-rebuild': 8.0.10(@pnpm/logger@5.0.0)(bluebird@3.7.2)
       '@pnpm/sort-packages': 5.0.2
       '@pnpm/store-connection-manager': 6.0.8(@pnpm/logger@5.0.0)(bluebird@3.7.2)
       '@pnpm/types': 9.0.0
       '@pnpm/workspace.pkgs-graph': 2.0.4
       '@teambit/harmony': 0.4.6
+      '@teambit/librarian.utils.ipc-bus': link:../librarian-ws/node_modules/@teambit/librarian.utils.ipc-bus
       core-js: 3.13.0
       credentials-by-uri: 2.0.0
       fs-extra: 10.0.0

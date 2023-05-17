@@ -9,8 +9,9 @@ import { nameVerFromPkgSnapshot } from '@pnpm/lockfile-utils';
 import { streamParser } from '@pnpm/logger';
 import { hoist } from '@pnpm/hoist';
 import { StoreController, WantedDependency } from '@pnpm/package-store';
+import { rebuild } from '@pnpm/plugin-commands-rebuild';
 import { linkBins } from '@pnpm/link-bins';
-import { readModulesManifest } from '@pnpm/modules-yaml';
+import { readModulesManifest, writeModulesManifest } from '@pnpm/modules-yaml';
 import { createOrConnectStoreController, CreateStoreControllerOptions } from '@pnpm/store-connection-manager';
 import { sortPackages } from '@pnpm/sort-packages';
 import {
@@ -317,6 +318,18 @@ export async function install(
         // Related issue: https://github.com/pnpm/pnpm/issues/2071
       }
       await linkAllBins(lockfile, virtualStoreDir);
+      await writeModulesManifest(modulesDir, {
+        virtualStoreDir,
+        layoutVersion: 5,
+        storeDir: storeController.dir,
+      } as any);
+      await rebuild.handler(
+        {
+          ...opts,
+          cacheDir,
+        },
+        []
+      );
     }
   } catch (err: any) {
     throw pnpmErrorToBitError(err);
