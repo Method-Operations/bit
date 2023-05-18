@@ -332,6 +332,9 @@ export async function install(
       );
     }
   } catch (err: any) {
+    if (logger) {
+      logger.warn('got an error from pnpm mutateModules function', err);
+    }
     throw pnpmErrorToBitError(err);
   } finally {
     if (stopReporting) {
