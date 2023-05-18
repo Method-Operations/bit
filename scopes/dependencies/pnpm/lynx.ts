@@ -42,7 +42,6 @@ import { pnpmErrorToBitError } from './pnpm-error-to-bit-error';
 import { readConfig } from './read-config';
 
 const installsRunning: Record<string, Promise<any>> = {};
-const { sendMessage } = ipcBus('librarian');
 
 type RegistriesMap = {
   default: string;
@@ -172,6 +171,7 @@ export async function install(
   networkConfig: PackageManagerNetworkConfig = {},
   options: {
     updateAll?: boolean;
+    mountModules?: boolean;
     nodeLinker?: 'hoisted' | 'isolated';
     overrides?: Record<string, string>;
     rootComponents?: boolean;
@@ -191,7 +191,6 @@ export async function install(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   logger?: Logger
 ): Promise<{ dependenciesChanged: boolean }> {
-  let mountModules = true;
   let externalDependencies: Set<string> | undefined;
   const readPackage: ReadPackageHook[] = [];
   if (options?.rootComponents && !options?.rootComponentsForCapsules) {
@@ -233,7 +232,7 @@ export async function install(
     allProjects,
     autoInstallPeers: false,
     confirmModulesPurge: false,
-    excludeLinksFromLockfile: !mountModules,
+    excludeLinksFromLockfile: !options.mountModules,
     storeDir: storeController.dir,
     dedupePeerDependents: true,
     dir: rootDir,
@@ -264,7 +263,7 @@ export async function install(
       ...options?.peerDependencyRules,
     },
     depth: options.updateAll ? Infinity : 0,
-    lockfileOnly: mountModules,
+    lockfileOnly: options.mountModules,
   };
 
   let stopReporting;
@@ -291,8 +290,9 @@ export async function install(
     const { stats } = await installsRunning[rootDir];
     dependenciesChanged = stats.added + stats.removed + stats.linkedToRoot > 0;
     delete installsRunning[rootDir];
-    if (mountModules) {
+    if (options.mountModules) {
       const modulesDir = path.join(rootDir, 'node_modules');
+      const { sendMessage } = ipcBus('librarian');
       await sendMessage({
         folder: modulesDir,
       });
