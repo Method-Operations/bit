@@ -36,7 +36,7 @@ import { pickRegistryForPackage } from '@pnpm/pick-registry-for-package';
 import { createPkgGraph } from '@pnpm/workspace.pkgs-graph';
 import { PackageManifest, ProjectManifest, ReadPackageHook } from '@pnpm/types';
 import { Logger } from '@teambit/logger';
-import ipcBus from '@teambit/librarian.utils.ipc-bus';
+import ipcBus from '@teambit/network.ipc.ipc-bus';
 import toNerfDart from 'nerf-dart';
 import { pnpmErrorToBitError } from './pnpm-error-to-bit-error';
 import { readConfig } from './read-config';
