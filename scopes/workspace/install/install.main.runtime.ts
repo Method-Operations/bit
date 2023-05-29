@@ -252,6 +252,7 @@ export class InstallMain {
     const compDirMap = await this.getComponentsDirectory([]);
     let installCycle = 0;
     let hasMissingLocalComponents = true;
+    const forceTeambitHarmonyLink = !this.dependencyResolver.hasHarmonyInRootPolicy();
     /* eslint-disable no-await-in-loop */
     do {
       // In case there are missing local components,
@@ -267,6 +268,7 @@ export class InstallMain {
         {
           linkedDependencies,
           installTeambitBit: false,
+          forceTeambitHarmonyLink,
         },
         pmInstallOptions
       );
